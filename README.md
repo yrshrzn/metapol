@@ -1,1 +1,1 @@
-# metapol
+# METAPOL presale contract
