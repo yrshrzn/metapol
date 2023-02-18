@@ -1,0 +1,54 @@
+pragma solidity ^0.8.0;
+
+contract VotingContract {
+    struct Proposal {
+        uint id;
+        string description;
+        uint votesFor;
+        uint votesAgainst;
+        address proposer;
+        bool open;
+    }
+
+    Proposal[] public proposals;
+    mapping(address => bool) public voters;
+
+    event ProposalSubmitted(uint id, string description, address proposer);
+    event ProposalVoted(uint id, address voter, bool voteFor);
+    event ProposalClosed(uint id);
+
+    function submitProposal(string memory description) public {
+        uint id = proposals.length;
+        Proposal memory proposal = Proposal({
+            id: id,
+            description: description,
+            votesFor: 0,
+            votesAgainst: 0,
+            proposer: msg.sender,
+            open: true
+        });
+        proposals.push(proposal);
+        emit ProposalSubmitted(id, description, msg.sender);
+    }
+
+    function vote(uint id, bool voteFor) public {
+        require(id < proposals.length, "Invalid proposal ID");
+        require(proposals[id].open, "Proposal is closed");
+        require(!voters[msg.sender], "Already voted");
+        if (voteFor) {
+            proposals[id].votesFor += 1;
+        } else {
+            proposals[id].votesAgainst += 1;
+        }
+        voters[msg.sender] = true;
+        emit ProposalVoted(id, msg.sender, voteFor);
+    }
+
+    function closeProposal(uint id) public {
+        require(id < proposals.length, "Invalid proposal ID");
+        require(proposals[id].open, "Proposal is already closed");
+        require(msg.sender == proposals[id].proposer, "Only proposer can close proposal");
+        proposals[id].open = false;
+        emit ProposalClosed(id);
+    }
+}
