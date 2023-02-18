@@ -1,0 +1,33 @@
+@app.route('/')
+@login_required
+def index():
+    companies = Company.query.all()
+    return render_template('index.html', companies=companies)
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/login/google')
+def login_google():
+    if not google.authorized:
+        return render_template(url_for('google.login'))
+    resp = google.get('/oauth2/v2/userinfo')
+    if resp.ok:
+        email = resp.json()['email']
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            user = User(email=email, username=email.split('@')[0])
+            db.session.add(user)
+            db.session.commit()
+        login_user(user)
+    return redirect('/')
+
+@app.route('/login/twitter')
+def login_twitter():
+    if not twitter.authorized:
+        return render_template(url_for('twitter.login'))
+    resp = twitter.get('account/settings.json')
+    if resp.ok:
+        username = resp.json()['screen_name']
+        user = User.query.filter_by(username=username).
