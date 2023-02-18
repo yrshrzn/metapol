@@ -1,0 +1,28 @@
+class Proposal:
+    def __init__(self, id, score, comment, votes):
+        self.id = id
+        self.score = score
+        self.comment = comment
+        self.votes = votes
+
+class SmartContract:
+    def __init__(self, address):
+        self.address = address
+        self.web3 = Web3(HTTPProvider('http://localhost:8545'))
+        self.contract = self.web3.eth.contract(address=self.address, abi=abi)
+    
+    def submitProposal(self, id, score, comment):
+        tx_hash = self.contract.functions.submitProposal(id, score, comment).transact({'from': self.web3.eth.defaultAccount})
+        return tx_hash
+    
+    def getProposal(self, index):
+        proposal = self.contract.functions.proposals(index).call()
+        return Proposal(proposal[0], proposal[1], proposal[2], proposal[3])
+    
+    def getNumProposals(self):
+        num_proposals = self.contract.functions.numProposals().call()
+        return num_proposals
+    
+    def vote(self, index):
+        tx_hash = self.contract.functions.vote(index).transact({'from': self.web3.eth.defaultAccount})
+        return tx_hash
