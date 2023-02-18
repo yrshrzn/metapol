@@ -1,0 +1,44 @@
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.dashboard-section {
+  margin-bottom: 20px;
+}
+
+.dashboard-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dashboard-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-section li {
+  margin-bottom: 10px;
+}
+
+.dashboard-section li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.dashboard-section li a:hover {
+  text-decoration: underline;
+}
