@@ -30,4 +30,38 @@ def login_twitter():
     resp = twitter.get('account/settings.json')
     if resp.ok:
         username = resp.json()['screen_name']
-        user = User.query.filter_by(username=username).
+        user = User.query.filter_by(username=username)
+
+    if not user:
+            user = User(username=username)
+            db.session.add(user)
+            db.session.commit()
+        login_user(user)
+    return redirect('/')
+    
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+
+@app.route('/company/<int:id>')
+@login_required
+def company(id):
+    company = Company.query.get_or_404(id)
+    return render_template('company.html', company=company)
+
+@app.route('/company/<int:id>/rate', methods=['GET', 'POST'])
+@login_required
+def rate(id):
+    company = Company.query.get_or_404(id)
+    if request.method == 'POST':
+        score = request.form.get('score')
+        comment = request.form.get('comment')
+        rating = Rating(user_id=current_user.id, company_id=id, score=score, comment=comment)
+        db.session.add(rating)
+        db.session.commit()
+        # Submit rating to the smart contract as a proposal
+        tx_hash = contract.functions.submitProposal(id, score, comment).transact({'from': current_user.address})
+        return redirect(url_for('company', id=id))
+    return render_template('rate.html', company=company)
