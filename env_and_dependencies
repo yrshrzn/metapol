@@ -1,0 +1,30 @@
+from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
+from web3 import Web3, HTTPProvider
+from contract_abi import abi
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key_here'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['GOOGLE_OAUTH_CLIENT_ID'] = 'your_client_id_here'
+app.config['GOOGLE_OAUTH_CLIENT_SECRET'] = 'your_client_secret_here'
+app.config['TWITTER_OAUTH_CLIENT_ID'] = 'your_client_id_here'
+app.config['TWITTER_OAUTH_CLIENT_SECRET'] = 'your_client_secret_here'
+
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+web3 = Web3(HTTPProvider('http://localhost:8545'))
+contract_address = 'your_contract_address_here'
+contract = web3.eth.contract(address=contract_address, abi=abi)
+
+google_blueprint = make_google_blueprint()
+twitter_blueprint = make_twitter_blueprint()
+
+app.register_blueprint(google_blueprint, url_prefix='/login')
+app.register_blueprint(twitter_blueprint, url_prefix='/login')
