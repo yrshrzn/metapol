@@ -1,0 +1,94 @@
+		
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Due Diligence Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#compliance_checks').click(function() {
+				if ($(this).is(':checked')) {
+					$('#compliance_checks_details').show();
+				} else {
+					$('#compliance_checks_details').hide();
+				}
+			});
+
+			$('#financial_analysis').click(function() {
+				if ($(this).is(':checked')) {
+					$('#financial_analysis_details').show();
+				} else {
+					$('#financial_analysis_details').hide();
+				}
+			});
+
+			$('#risk_assessments').click(function() {
+				if ($(this).is(':checked')) {
+					$('#risk_assessments_details').show();
+				} else {
+					$('#risk_assessments_details').hide();
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<h1>Due Diligence Form</h1>
+	<form method="post" action="submit.php">
+		<label for="company_name">Company Name:</label>
+		<input type="text" id="company_name" name="company_name" required><br>
+
+		<label for="compliance_checks">Compliance Checks:</label>
+		<input type="checkbox" id="compliance_checks" name="compliance_checks"><br>
+		<div id="compliance_checks_details" style="display:none">
+			<h3>Compliance Checks Details:</h3>
+			<label for="regulatory_compliance">Regulatory Compliance:</label>
+			<input type="checkbox" id="regulatory_compliance" name="regulatory_compliance"><br>
+			<label for="legal_compliance">Legal Compliance:</label>
+			<input type="checkbox" id="legal_compliance" name="legal_compliance"><br>
+			<label for="industry_standards">Industry Standards:</label>
+			<input type="checkbox" id="industry_standards" name="industry_standards"><br>
+			<label for="other_compliance">Other Compliance:</label>
+			<input type="text" id="other_compliance" name="other_compliance"><br>
+		</div>
+
+		<label for="financial_analysis">Financial Analysis:</label>
+		<input type="checkbox" id="financial_analysis" name="financial_analysis"><br>
+		<div id="financial_analysis_details" style="display:none">
+			<h3>Financial Analysis Details:</h3>
+			<label for="balance_sheet">Balance Sheet:</label>
+			<input type="checkbox" id="balance_sheet" name="balance_sheet"><br>
+			<label for="income_statement">Income Statement:</label>
+			<input type="checkbox" id="income_statement" name="income_statement"><br>
+			<label for="cash_flow_statement">Cash Flow Statement:</label>
+			<input type="checkbox" id="cash_flow_statement" name="cash_flow_statement"><br>
+			<label for="financial_ratios">Financial Ratios:</label>
+			<input type="checkbox" id="financial_ratios" name="financial_ratios"><br>
+			<label for="other_financial_analysis">Other Financial Analysis:</label>
+			<input type="text" id="other_financial_analysis" name="other_financial_analysis"><br>
+		</div>
+
+		<label for="risk_assessments">Risk Assessment:</label>
+
+<input type="checkbox" id="risk_assessments" name="risk_assessments"><br>
+		<div id="risk_assessments_details" style="display:none">
+			<h3>Risk Assessments Details:</h3>
+			<label for="market_risk">Market Risk:</label>
+			<input type="checkbox" id="market_risk" name="market_risk"><br>
+			<label for="credit_risk">Credit Risk:</label>
+			<input type="checkbox" id="credit_risk" name="credit_risk"><br>
+			<label for="operational_risk">Operational Risk:</label>
+			<input type="checkbox" id="operational_risk" name="operational_risk"><br>
+			<label for="liquidity_risk">Liquidity Risk:</label>
+			<input type="checkbox" id="liquidity_risk" name="liquidity_risk"><br>
+			<label for="other_risks">Other Risks:</label>
+			<input type="text" id="other_risks" name="other_risks"><br>
+		</div>
+
+		<label for="notes">Notes:</label>
+		<textarea id="notes" name="notes"></textarea><br>
+
+		<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
